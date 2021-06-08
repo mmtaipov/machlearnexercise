@@ -118,7 +118,7 @@ def cv_and_predict(
         model_kf.fit(
             X_train,
             y_train,
-            plot=True,
+            plot=False,
             eval_set=(X_valid, y_valid),
             use_best_model=True,
             early_stopping_rounds=50,
