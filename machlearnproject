@@ -182,4 +182,4 @@ pred_test, oof_df, metric_OOF = cv_and_predict(train.drop(['num_orders', 'id', '
 submission = pd.DataFrame()
 submission["id"] = test_ids
 submission["num_orders"] = pred_test
- submission.to_csv("/Users/mikhailtaipov/Downloads/submission.csv", index=False)
+submission.to_csv("/Users/mikhailtaipov/Downloads/submission.csv", index=False)
