@@ -30,6 +30,12 @@ train["relprice"]=train["checkout_price"]/train["base_price"]
  
 train.head()
 
+id	week	center_id	meal_id	checkout_price	base_price	emailer_for_promotion	homepage_featured	rating	city_code	region_code	center_type	op_area	category	cuisine	num_orders	relprice
+0	1379560	1	55	1885	-1.270654	-1.257652	0	0	-0.418834	647	56	TYPE_C	2	Beverages	Thai	177	1.010338
+1	1466964	1	55	1993	-1.270654	-1.361643	0	0	-0.114370	647	56	TYPE_C	2	Beverages	Thai	270	0.933177
+2	1346989	1	55	2539	-1.283632	-1.361453	0	0	0.066914	647	56	TYPE_C	2	Beverages	Thai	189	0.942840
+3	1338232	1	55	2139	0.064550	0.544444	0	0	-0.516448	647	56	TYPE_C	2	Beverages	Indian	54	0.118561
+4	1448490	1	55	2631	-0.567905	-0.687721	0	0	-0.700056	647	56	TYPE_C	2	Beverages	Indian	40	0.825777
 
 test["checkout_price"]=test["checkout_price"]-test["checkout_price"].mean()
 test["checkout_price"]=test["checkout_price"]/(test["checkout_price"].std())
@@ -43,6 +49,12 @@ test["relprice"]=test["checkout_price"]/test["base_price"]
  
 test["op_area"]= (np.round(test["op_area"])).astype(int)
 test.head()
+	id	week	center_id	meal_id	checkout_price	base_price	emailer_for_promotion	homepage_featured	rating	city_code	region_code	center_type	op_area	category	cuisine	relprice
+0	1256496	100	55	1885	-1.243297	-1.289691	0	0	0.425949	647	56	TYPE_C	2	Beverages	Thai	0.964027
+1	1298009	100	55	1993	-1.211645	-1.272098	0	0	-1.148432	647	56	TYPE_C	2	Beverages	Thai	0.952478
+2	1348875	100	55	2539	-1.205779	-1.254505	0	0	1.010758	647	56	TYPE_C	2	Beverages	Thai	0.961159
+3	1272771	100	55	2139	-0.192781	-0.316568	0	0	-0.433665	647	56	TYPE_C	2	Beverages	Indian	0.608970
+4	1313265	100	55	2631	-1.549311	-1.242957	0	0	0.195816	647	56	TYPE_C	2	Beverages	Indian	1.246472
 
 def cv_and_predict(
     df_train,
@@ -178,8 +190,139 @@ pred_test, oof_df, metric_OOF = cv_and_predict(train.drop(['num_orders', 'id', '
                                                test.drop(['id', 'week'], axis=1), 
                                                train_y=train['num_orders'], 
     n_splits=5, model=cbs_reg)
+fold_0 started
+0:	learn: 1.6630458	test: 1.6614723	best: 1.6614723 (0)	total: 265ms	remaining: 1m 19s
+Stopped by overfitting detector  (50 iterations wait)
+
+bestTest = 0.899450403
+bestIteration = 1
+
+Shrink model to first 2 iterations.
+metric_0: 0.9665658827782178
+
+____________________________________________________________________________________________________
+
+fold_1 started
+0:	learn: 1.6630104	test: 1.6617854	best: 1.6617854 (0)	total: 233ms	remaining: 1m 9s
+Stopped by overfitting detector  (50 iterations wait)
+
+bestTest = 0.8998971585
+bestIteration = 1
+
+Shrink model to first 2 iterations.
+metric_1: 0.9665259547157415
+
+____________________________________________________________________________________________________
+
+fold_2 started
+0:	learn: 1.6625500	test: 1.6635271	best: 1.6635271 (0)	total: 233ms	remaining: 1m 9s
+Stopped by overfitting detector  (50 iterations wait)
+
+bestTest = 0.9008157746
+bestIteration = 1
+
+Shrink model to first 2 iterations.
+metric_2: 0.9667008738557206
+
+____________________________________________________________________________________________________
+
+fold_3 started
+0:	learn: 1.6618571	test: 1.6658820	best: 1.6658820 (0)	total: 245ms	remaining: 1m 13s
+Stopped by overfitting detector  (50 iterations wait)
+
+bestTest = 0.9024810983
+bestIteration = 1
+
+Shrink model to first 2 iterations.
+metric_3: 0.9667935873570747
+
+____________________________________________________________________________________________________
+
+fold_4 started
+0:	learn: 1.6630843	test: 1.6609177	best: 1.6609177 (0)	total: 230ms	remaining: 1m 8s
+Stopped by overfitting detector  (50 iterations wait)
+
+bestTest = 0.8987022403
+bestIteration = 1
+
+Shrink model to first 2 iterations.
+metric_4: 0.9664144932687869
+
+____________________________________________________________________________________________________
+
+metric_OOF: 0.9666001583697353
+metric_AVG: 0.9666001583951083
+metric_std: 0.00013319978259024933
+
+****************************************************************************************************
+
+
 
 submission = pd.DataFrame()
 submission["id"] = test_ids
 submission["num_orders"] = pred_test
+submission
+	id	num_orders
+0	1256496	2.131574
+1	1298009	2.145528
+2	1348875	2.131574
+3	1272771	2.167109
+4	1313265	2.127053
+5	1392835	2.163363
+6	1405813	2.129436
+7	1294858	2.140194
+8	1115085	2.148728
+9	1423887	2.147299
+10	1250994	2.147299
+11	1204955	2.163165
+12	1129621	2.162736
+13	1197225	2.141298
+14	1377833	2.152009
+15	1378056	2.164358
+16	1055278	2.117456
+17	1447206	1.573747
+18	1099276	2.131654
+19	1275326	2.158856
+20	1006926	2.161854
+21	1040731	2.138819
+22	1023036	2.129588
+23	1263417	2.142493
+24	1147662	2.143069
+25	1164854	2.168533
+26	1287418	2.155238
+27	1403855	2.164935
+28	1441310	1.846864
+29	1198477	2.157799
+...	...	...
+150530	1325626	2.171285
+150531	1093269	2.170877
+150532	1338824	2.167210
+150533	1158460	2.165535
+150534	1340813	2.167340
+150535	1443704	2.171285
+150536	1287722	2.171443
+150537	1031000	2.171103
+150538	1288462	2.170656
+150539	1220280	2.166571
+150540	1032849	2.166353
+150541	1469586	2.166115
+150542	1038490	2.165736
+150543	1394189	2.166464
+150544	1357555	2.165128
+150545	1176475	2.170815
+150546	1133784	2.167210
+150547	1379712	2.167340
+150548	1306192	2.169534
+150549	1371867	2.167917
+150550	1055597	2.168762
+150551	1372838	2.165924
+150552	1035758	2.169728
+150553	1010438	2.171443
+150554	1116711	2.171155
+150555	1271326	2.170578
+150556	1062036	2.171155
+150557	1110849	2.170198
+150558	1147725	2.170049
+150559	1361984	2.166702
+150560 rows × 2 columns
 submission.to_csv("/Users/mikhailtaipov/Downloads/submission.csv", index=False)
